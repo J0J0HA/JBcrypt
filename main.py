@@ -1,8 +1,8 @@
 import jbcrypt
 
 msg = input("MSG: ")
-encrypted = jbcrypt.encrypt(msg)
-decrypted = jbcrypt.decrypt(msg)
+encrypted = jbcrypt.encode(msg)
+decrypted = jbcrypt.decode(msg)
 print(msg)
 print(encrypted)
 print(decrypted)
