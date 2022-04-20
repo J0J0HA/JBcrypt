@@ -20,13 +20,25 @@ class Encoder:
         key_list = list(key)
         for index in range(0, 3):
             key += self._random_letter(not_in=key)
-        for index in range(0, 3):
-            msg += self._random_letter(not_in=msg)
-        if msg_dif > msg_len:
-            for index in range(0, msg_dif - msg_len):
-                key += self._random_letter(not_in=key)
         random.shuffle(key_list)
-        key = "".join(key_list)
-        print("KEY", key)
-        print("MSG", msg)
-        return msg
+        key_dict = {}
+        for index in range(len(key_list)):
+            key_dict[key_list[index]] = key_list[len(key_list) - index - 1]
+            key_dict[key_list[len(key_list) - index - 1]] = key_list[index]
+        msg_list = list(msg)
+        for index in range(len(msg)):
+            msg_list[index] = key_dict[msg_list[index]]
+        for index in range(0, 3):
+            msg_list.insert(random.randint(0, len(msg_list) - 1), self._random_letter(not_in=msg + key))
+        msg = "".join(msg_list)
+        result = ""
+        key_pos = False
+        real_index = 0
+        for index in range(len(key) + len(msg)):
+            if key_pos:
+                result += key[real_index]
+                real_index += 1
+            else:
+                result += msg[real_index]
+            key_pos = not key_pos
+        return result
