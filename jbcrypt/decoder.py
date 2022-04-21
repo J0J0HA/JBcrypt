@@ -1,4 +1,8 @@
 class Decoder:
+    def __init__(self, **options):
+        for option in options.items():
+            setattr(self, option[0], option[1])
+
     def decode(self, encrypted_msg: str):
         key = ""
         msg = ""
@@ -13,10 +17,9 @@ class Decoder:
         key_dict = {}
         for index in range(len(key_list)):
             key_dict[key_list[index]] = key_list[len(key_list) - index - 1]
-            key_dict[key_list[len(key_list) - index - 1]] = key_list[index]
         msg_list = list(msg)
-        for index in range(len(msg)):
-            if msg_list[index] in key_dict:
-                msg_list[index] = key_dict[msg_list[index]]
-        msg = "".join(msg_list)
-        return msg
+        result = []
+        for letter in msg_list:
+            if letter in key_dict.keys():
+                result.append(key_dict[letter])
+        return "".join(result)
